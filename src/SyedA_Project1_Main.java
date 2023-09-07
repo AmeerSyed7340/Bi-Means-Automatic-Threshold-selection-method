@@ -28,6 +28,25 @@ class ThresholdSelection{
     }//constructor
 
     int loadHist(int [] histAry, File inFile){
+        try{
+            Scanner sc = new Scanner(inFile);
+            String line;
+            line = sc.nextLine();
+            int a, b;
+            while (sc.hasNextInt()) {
+                a = sc.nextInt();
+                b = sc.nextInt();
+                histAry[a] = b;
+                System.out.println(histAry[a]);
+            }
+
+
+            //close scanner
+            sc.close();
+        }
+        catch(IOException e){
+            System.out.println(e);
+        }
         return 0;
     }//loadHist
 
@@ -86,6 +105,7 @@ public class SyedA_Project1_Main {
             System.out.println(e);
         }
         ThresholdSelection ts = new ThresholdSelection(numRows, numCols, minVal, maxVal);
+        System.out.println(ts.histAry.length);
         ts.maxHeight = ts.loadHist(ts.histAry, inFile);
     }
 }
