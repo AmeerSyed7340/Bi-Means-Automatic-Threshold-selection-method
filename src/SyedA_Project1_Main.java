@@ -1,5 +1,5 @@
 import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Scanner;
 
 class ThresholdSelection{
@@ -11,11 +11,23 @@ class ThresholdSelection{
     int maxHeight; // largest hist[i]
 
     //methods
-    public ThresholdSelection(){ //dynamically allocate all member arrays and initializations
+    public ThresholdSelection(int numRows, int numCols, int minVal, int maxVal){ //dynamically allocate all member arrays and initializations
+        this.numRows = numRows;
+        this.numCols = numCols;
+        this.minVal = minVal;
+        this.maxVal = maxVal;
 
+        //allocate member arrays
+        histAry = new int[this.maxVal + 1];
+
+        //initialize member arrays to zero
+        //can be replaced with Arrays.fill() -- easier method
+        for(int i = 0; i < histAry.length; i++){
+            histAry[i] = 0;
+        }
     }//constructor
 
-    int loadHist(){
+    int loadHist(int [] histAry, File inFile){
         return 0;
     }//loadHist
 
@@ -49,17 +61,31 @@ class ThresholdSelection{
 }//ThresholdSelection
 public class SyedA_Project1_Main {
     public static void main(String[] args) {
-        File input_data1 =  new File("./src/data1.txt");
+        //Step 0:
+        //Open input file and create output files
+        File inFile =  new File("./src/data2.txt");
+        File outFile1 = new File("./src/outFile1.txt");
+        File debugFile = new File("./src/debugFile.txt");
+
+        int numRows = 0, numCols = 0, minVal = 0, maxVal = 0; //vars to pass into constructor
         try{
-            Scanner scanner = new Scanner(input_data1);
-            String line;
-            while(scanner.hasNextLine()){
-                line = scanner.nextLine();
-                System.out.println(line);
+            Scanner scanner = new Scanner(inFile);
+            //Step 1:
+            if(scanner.hasNext()){
+                numRows = scanner.nextInt();
+                numCols = scanner.nextInt();
+                minVal = scanner.nextInt();
+                maxVal = scanner.nextInt();
             }
-        }
-        catch(FileNotFoundException e){
+            //TEST
+            System.out.println(numRows + " " + numCols + " " + minVal + " " + maxVal);
+
+            //close scanner and fileWriter/s
+            scanner.close();
+        } catch(IOException e){
             System.out.println(e);
         }
+        ThresholdSelection ts = new ThresholdSelection(numRows, numCols, minVal, maxVal);
+        ts.maxHeight = ts.loadHist(ts.histAry, inFile);
     }
 }
