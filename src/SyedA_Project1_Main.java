@@ -58,7 +58,7 @@ class ThresholdSelection {
 
     void dispHist(int[] histAry, File outFile1) {
         try {
-            FileWriter fw = new FileWriter(outFile1);
+            FileWriter fw = new FileWriter(outFile1, true);
             for (int i = 0; i < histAry.length; i++) {
                 fw.write(i + " (" + histAry[i] + "): ");
                 for (int j = 0; j < histAry[i]; j++) {
@@ -128,6 +128,7 @@ class ThresholdSelection {
             //Step 9:
             fw_deBugFile = new FileWriter(deBugFile, true);
             fw_deBugFile.write("Leaving biGaussian method, minSumDiff = " + minSumDiff + " bestThr is " + bestThr + "\n");
+            fw_deBugFile.write("\n");
             //close fw
             fw_deBugFile.close();
         } catch (IOException e) {
@@ -171,6 +172,7 @@ class ThresholdSelection {
 
             //Step 7:
             fw.write("Leaving computeMean method, maxHeight is: " + maxHeight + " and result is: " + result + "\n");
+            fw.write("\n");
             fw.close();
         }
         catch(IOException e){
@@ -209,6 +211,8 @@ class ThresholdSelection {
 
             //Step 6:
             fw.write("Leaving computerVar method returning result: " + result + "\n");
+            fw.write("\n");
+            fw.close();
         }catch(IOException e){
             System.out.println(e);
         }
@@ -258,6 +262,7 @@ class ThresholdSelection {
             //Step 8:
             fw = new FileWriter(deBugFile, true);
             fw.write("Leaving fitGauss method, sum is: " + sum + "\n");
+            fw.write("\n");
 
             //close files
             fw.close();
@@ -270,40 +275,45 @@ class ThresholdSelection {
 
 public class SyedA_Project1_Main {
     public static void main(String[] args) {
-//        //Step 0:
-//        //Open input file and create output files
-//        File inFile = new File(args[0]);
-//        File outFile1 = new File(args[1]);
-//        File deBugFile = new File(args[2]);
-//
-//        int numRows = 0, numCols = 0, minVal = 0, maxVal = 0; //vars to pass into constructor
-//        try {
-//            Scanner scanner = new Scanner(inFile);
-//            FileWriter fw_outFile = new FileWriter(outFile1, true);
-//            //Step 1:
-//            if (scanner.hasNext()) {
-//                numRows = scanner.nextInt();
-//                numCols = scanner.nextInt();
-//                minVal = scanner.nextInt();
-//                maxVal = scanner.nextInt();
-//            }
-//            ThresholdSelection ts = new ThresholdSelection(numRows, numCols, minVal, maxVal);
-//            ts.maxHeight = ts.loadHist(ts.histAry, inFile);
-//
-//            //Step 2:
-//            ts.dispHist(ts.histAry, outFile1);
-//
-//            //Step 3:
-//            ts.BiGaussThrVal = ts.biGauss(ts.histAry, ts.GaussAry, ts.maxHeight, ts.minVal, ts.maxVal, deBugFile);
-//            fw_outFile.write("BiGaussThrval: " + ts.BiGaussThrVal + "\n");
-//
-//            //Step 4:
-//            //close scanner and fileWriter/s
-//            scanner.close();
-//            fw_outFile.close();
-//        } catch (IOException e) {
-//            System.out.println(e);
-//        }
-        System.out.println("hello");
+        //Step 0:
+        //Open input file and create output files
+        File inFile = new File(args[0]);
+        File outFile1 = new File(args[1]);
+        File deBugFile = new File(args[2]);
+
+        int numRows = 0, numCols = 0, minVal = 0, maxVal = 0; //vars to pass into constructor
+        try {
+            Scanner scanner = new Scanner(inFile);
+            FileWriter fw_outFile = new FileWriter(outFile1, true);
+            //Step 1:
+            if (scanner.hasNext()) {
+                numRows = scanner.nextInt();
+                numCols = scanner.nextInt();
+                minVal = scanner.nextInt();
+                maxVal = scanner.nextInt();
+            }
+            //display the header in outFile1
+            fw_outFile.write(numRows + " " + numCols + " " + minVal + " " + maxVal + "\n");
+            fw_outFile.close();
+
+            ThresholdSelection ts = new ThresholdSelection(numRows, numCols, minVal, maxVal);
+            ts.maxHeight = ts.loadHist(ts.histAry, inFile);
+
+            //Step 2:
+            ts.dispHist(ts.histAry, outFile1);
+
+            //Step 3:
+            ts.BiGaussThrVal = ts.biGauss(ts.histAry, ts.GaussAry, ts.maxHeight, ts.minVal, ts.maxVal, deBugFile);
+
+            fw_outFile = new FileWriter(outFile1, true);
+            fw_outFile.write("BiGaussThrval: " + ts.BiGaussThrVal + "\n");
+
+            //Step 4:
+            //close scanner and fileWriter/s
+            scanner.close();
+            fw_outFile.close();
+        } catch (IOException e) {
+            System.out.println(e);
+        }
     }
 }
