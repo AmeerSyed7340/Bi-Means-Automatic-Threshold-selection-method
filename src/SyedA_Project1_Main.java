@@ -24,6 +24,7 @@ class ThresholdSelection {
 
         //initialize member arrays to zero
         //can be replaced with Arrays.fill() -- easier method
+        //DO THIS USING setZero method after making sure everything works
         for (int i = 0; i < this.maxVal + 1; i++) {
             histAry[i] = 0;
 
@@ -79,7 +80,9 @@ class ThresholdSelection {
     }//dispHist
 
     void setZero(int[] Ary) {
-
+        for(int i = 0; i < Ary.length; i++){
+            Ary[i] = 0;
+        }
     }//setZero
 
     int biGauss(int[] histAry, int[] GaussAry, int maxHeight, int minVal, int maxVal, File deBugFile) {
@@ -147,7 +150,7 @@ class ThresholdSelection {
 
         //Step 0:
         try{
-            FileWriter fw = new FileWriter(deBugFile);
+            FileWriter fw = new FileWriter(deBugFile, true);
             fw.write("Entering computeMean method\n");
 
             //Step 1:
@@ -186,15 +189,36 @@ class ThresholdSelection {
     double computeVar(int leftIndex, int rightIndex, double mean, int[]histAry, File deBugFile) {
         double sum = 0.0;
         int numPixels = 0;
+        double result = 0.0;
 
         try{
-            FileWriter fw = new FileWriter(deBugFile);
+            FileWriter fw = new FileWriter(deBugFile, true);
+            //Step 0:
             fw.write("Entering computerVar method \n");
+
+            //Step 1:
+            int index = leftIndex;
+
+            //Step 4:
+            while(index < rightIndex) {
+                //Step 2:
+                sum += (double) histAry[index] * ((double) index - mean) * ((double) index - mean);
+                numPixels += histAry[index];
+
+                //Step 3:
+                index++;
+            }
+
+            //Step 5:
+            result = sum / (double) numPixels;
+
+            //Step 6:
+            fw.write("Leaving computerVar method returning result: " + result + "\n");
         }catch(IOException e){
             System.out.println(e);
         }
         //Step 7:
-        return 0.0;
+        return result;
     }//computeVar
 
     double modifiedGauss(int x, double mean, double var, int maxHeight) {
@@ -237,7 +261,7 @@ class ThresholdSelection {
                 index++;
             }
             //Step 8:
-            fw = new FileWriter(deBugFile);
+            fw = new FileWriter(deBugFile, true);
             fw.write("Leaving fitGauss method, sum is: " + sum + "\n");
 
             //close files
