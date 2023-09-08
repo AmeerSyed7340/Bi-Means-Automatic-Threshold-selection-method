@@ -270,39 +270,40 @@ class ThresholdSelection {
 
 public class SyedA_Project1_Main {
     public static void main(String[] args) {
-        //Step 0:
-        //Open input file and create output files
-        File inFile = new File("./src/data2.txt");
-        File outFile1 = new File("./src/outFile1.txt");
-        File deBugFile = new File("./src/deBugFile.txt");
-
-        int numRows = 0, numCols = 0, minVal = 0, maxVal = 0; //vars to pass into constructor
-        try {
-            Scanner scanner = new Scanner(inFile);
-            FileWriter fw_outFile = new FileWriter(outFile1, true);
-            //Step 1:
-            if (scanner.hasNext()) {
-                numRows = scanner.nextInt();
-                numCols = scanner.nextInt();
-                minVal = scanner.nextInt();
-                maxVal = scanner.nextInt();
-            }
-            ThresholdSelection ts = new ThresholdSelection(numRows, numCols, minVal, maxVal);
-            ts.maxHeight = ts.loadHist(ts.histAry, inFile);
-           
-            //Step 2:
-            ts.dispHist(ts.histAry, outFile1);
-
-            //Step 3:
-            ts.BiGaussThrVal = ts.biGauss(ts.histAry, ts.GaussAry, ts.maxHeight, ts.minVal, ts.maxVal, deBugFile);
-            fw_outFile.write("BiGaussThrval: " + ts.BiGaussThrVal + "\n");
-
-            //Step 4:
-            //close scanner and fileWriter/s
-            scanner.close();
-            fw_outFile.close();
-        } catch (IOException e) {
-            System.out.println(e);
-        }
+//        //Step 0:
+//        //Open input file and create output files
+//        File inFile = new File(args[0]);
+//        File outFile1 = new File(args[1]);
+//        File deBugFile = new File(args[2]);
+//
+//        int numRows = 0, numCols = 0, minVal = 0, maxVal = 0; //vars to pass into constructor
+//        try {
+//            Scanner scanner = new Scanner(inFile);
+//            FileWriter fw_outFile = new FileWriter(outFile1, true);
+//            //Step 1:
+//            if (scanner.hasNext()) {
+//                numRows = scanner.nextInt();
+//                numCols = scanner.nextInt();
+//                minVal = scanner.nextInt();
+//                maxVal = scanner.nextInt();
+//            }
+//            ThresholdSelection ts = new ThresholdSelection(numRows, numCols, minVal, maxVal);
+//            ts.maxHeight = ts.loadHist(ts.histAry, inFile);
+//
+//            //Step 2:
+//            ts.dispHist(ts.histAry, outFile1);
+//
+//            //Step 3:
+//            ts.BiGaussThrVal = ts.biGauss(ts.histAry, ts.GaussAry, ts.maxHeight, ts.minVal, ts.maxVal, deBugFile);
+//            fw_outFile.write("BiGaussThrval: " + ts.BiGaussThrVal + "\n");
+//
+//            //Step 4:
+//            //close scanner and fileWriter/s
+//            scanner.close();
+//            fw_outFile.close();
+//        } catch (IOException e) {
+//            System.out.println(e);
+//        }
+        System.out.println("hello");
     }
 }
