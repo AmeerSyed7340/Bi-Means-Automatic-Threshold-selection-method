@@ -1,4 +1,5 @@
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
 
@@ -19,25 +20,36 @@ class ThresholdSelection{
 
         //allocate member arrays
         histAry = new int[this.maxVal + 1];
+        GaussAry = new int[this.maxVal + 1];
 
         //initialize member arrays to zero
         //can be replaced with Arrays.fill() -- easier method
-        for(int i = 0; i < histAry.length; i++){
+        for(int i = 0; i < this.maxVal+1; i++){
             histAry[i] = 0;
+
+            //utilizing the same count for both arrays. Not a big fan personally
+            GaussAry[i] = 0;
         }
     }//constructor
 
     int loadHist(int [] histAry, File inFile){
+        //max to keep track of the max value of b's
+        int max = 0;
+
         try{
             Scanner sc = new Scanner(inFile);
+            //string variable to ommit the first line
             String line;
             line = sc.nextLine();
+
             int a, b;
             while (sc.hasNextInt()) {
                 a = sc.nextInt();
                 b = sc.nextInt();
+                if(max < b){
+                    max = b;
+                }
                 histAry[a] = b;
-                System.out.println(histAry[a]);
             }
 
 
@@ -47,11 +59,25 @@ class ThresholdSelection{
         catch(IOException e){
             System.out.println(e);
         }
-        return 0;
+        return max;
     }//loadHist
 
-    void dispHist(){
-
+    void dispHist(int [] histAry, File outFile1){
+        try{
+            FileWriter fw = new FileWriter(outFile1);
+            for(int i = 0; i < histAry.length; i++){
+                fw.write(i + " (" + histAry[i] + "): ");
+                for(int j = 0; j < histAry[i]; j++){
+                    fw.write("+");
+                }
+                fw.write("\n");
+            }
+            //close FileWriter
+            fw.close();
+        }
+        catch(IOException e){
+            System.out.println(e);
+        }
     }//dispHist
 
     void setZero(int [] Ary){
@@ -105,7 +131,9 @@ public class SyedA_Project1_Main {
             System.out.println(e);
         }
         ThresholdSelection ts = new ThresholdSelection(numRows, numCols, minVal, maxVal);
-        System.out.println(ts.histAry.length);
         ts.maxHeight = ts.loadHist(ts.histAry, inFile);
+
+        //Step 2:
+        ts.dispHist(ts.histAry, outFile1);
     }
 }
