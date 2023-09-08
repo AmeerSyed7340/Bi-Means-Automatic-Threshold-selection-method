@@ -222,7 +222,7 @@ class ThresholdSelection {
     }//computeVar
 
     double modifiedGauss(int x, double mean, double var, int maxHeight) {
-        return 0.0;
+        return (double)(maxHeight * Math.exp(-((((double)x-mean)*((double)x-mean))/(2*var))));
     }//modifiedGauss
 
     double fitGauss(int leftIndex, int rightIndex, int[] histAry, int[] GaussAry, File deBugFile) {
