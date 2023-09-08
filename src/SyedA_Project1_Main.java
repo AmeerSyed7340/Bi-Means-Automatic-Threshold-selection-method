@@ -120,7 +120,7 @@ class ThresholdSelection {
 
                 //Step 6:
                 fw_deBugFile = new FileWriter(deBugFile, true);
-                fw_deBugFile.write("dividePt: " + dividePt + ", sum1: " + sum1 + ", sum2: " + sum2 + ", total: " + total + ", minSumDiff: " + minSumDiff + ", bestThr: " + bestThr +"\n");
+                fw_deBugFile.write("dividePt: " + dividePt + ", sum1: " + sum1 + ", sum2: " + sum2 + ", total: " + total + ", minSumDiff: " + minSumDiff + ", bestThr: " + bestThr + "\n");
                 fw_deBugFile.close(); //needs to be closed every iteration
 
                 //Step 7:
@@ -139,29 +139,113 @@ class ThresholdSelection {
         return bestThr;
     }//biGauss
 
-    double computeMean() {
-        return 0.0;
+    double computeMean(int leftIndex, int rightIndex, int maxHeight, int [] histAry, File deBugFile) {
+        maxHeight = 0;
+        int sum = 0;
+        int numPixels = 0;
+        double result = 0.0;
+
+        //Step 0:
+        try{
+            FileWriter fw = new FileWriter(deBugFile);
+            fw.write("Entering computeMean method\n");
+
+            //Step 1:
+            int index = leftIndex;
+
+            //Step 5:
+            while(index < rightIndex) {
+                //Step 2:
+                sum += (histAry[index] * index);
+                numPixels += histAry[index];
+
+                //Step 3:
+                if (histAry[index] > maxHeight) {
+                    maxHeight = histAry[index];
+                }
+
+                //Step 4:
+                index++;
+            }
+
+            //Step 6:
+            result = (double) sum / (double) numPixels;
+
+            //Step 7:
+            fw.write("Leaving computeMean method, maxHeight is: " + maxHeight + " and result is: " + result + "\n");
+            fw.close();
+        }
+        catch(IOException e){
+            System.out.println(e);
+        }
+
+        //Step 8:
+        return result;
     }//computeMean
 
-    double computeVar() {
+    double computeVar(int leftIndex, int rightIndex, double mean, int[]histAry, File deBugFile) {
+        double sum = 0.0;
+        int numPixels = 0;
+
+        try{
+            FileWriter fw = new FileWriter(deBugFile);
+            fw.write("Entering computerVar method \n");
+        }catch(IOException e){
+            System.out.println(e);
+        }
+        //Step 7:
         return 0.0;
     }//computeVar
 
-    void modifiedGauss(int x, double mean, int var, int maxHeight) {
-
+    double modifiedGauss(int x, double mean, double var, int maxHeight) {
+        return 0.0;
     }//modifiedGauss
 
     double fitGauss(int leftIndex, int rightIndex, int[] histAry, int[] GaussAry, File deBugFile) {
+        //putting vars outside of try block for global scope
+        double mean;
+        double var;
+        double sum = 0.0;
+        double Gval;
+        double maxGval;
+
         try {
             FileWriter fw = new FileWriter(deBugFile, true);
+            //Step 0:
             fw.write("Entering fitGauss method\n");
+            fw.close();//need to close before computeMean and computeVar can use the file
+
+            //Step 1:
+            mean = computeMean(leftIndex, rightIndex, maxHeight, histAry, deBugFile);
+            var = computeVar(leftIndex, rightIndex, mean, histAry, deBugFile);
+
+            //Step 2:
+            int index = leftIndex;
+
+            //Step 7:
+            while(index <= rightIndex) {
+                //Step 3:
+                Gval = modifiedGauss(index, mean, var, maxHeight);
+
+                //Step 4:
+                sum += Math.abs(Gval - (double) histAry[index]);
+
+                //Step 5:
+                GaussAry[index] = (int) Gval;
+
+                //Step 6:
+                index++;
+            }
+            //Step 8:
+            fw = new FileWriter(deBugFile);
+            fw.write("Leaving fitGauss method, sum is: " + sum + "\n");
 
             //close files
             fw.close();
         } catch (IOException e) {
             System.out.println(e);
         }
-        return 0.0;
+        return sum;
     }//fitGauss
 }//ThresholdSelection
 
@@ -195,7 +279,7 @@ public class SyedA_Project1_Main {
 
             //Step 3:
             ts.BiGaussThrVal = ts.biGauss(ts.histAry, ts.GaussAry, ts.maxHeight, ts.minVal, ts.maxVal, deBugFile);
-            fw_outFile.write("BiGaussThrval: " + ts.BiGaussThrVal);
+            fw_outFile.write("BiGaussThrval: " + ts.BiGaussThrVal + "\n");
 
             //Step 4:
             //close scanner and fileWriter/s
