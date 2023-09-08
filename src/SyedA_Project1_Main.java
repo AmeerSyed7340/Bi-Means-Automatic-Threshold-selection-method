@@ -23,14 +23,8 @@ class ThresholdSelection {
         GaussAry = new int[this.maxVal + 1];
 
         //initialize member arrays to zero
-        //can be replaced with Arrays.fill() -- easier method
-        //DO THIS USING setZero method after making sure everything works
-        for (int i = 0; i < this.maxVal + 1; i++) {
-            histAry[i] = 0;
-
-            //utilizing the same count for both arrays. Not a big fan personally
-            GaussAry[i] = 0;
-        }
+        setZero(histAry);
+        setZero(GaussAry);
     }//constructor
 
     int loadHist(int[] histAry, File inFile) {
@@ -80,6 +74,7 @@ class ThresholdSelection {
     }//dispHist
 
     void setZero(int[] Ary) {
+        //can be replaced with Arrays.fill() -- easier method
         for(int i = 0; i < Ary.length; i++){
             Ary[i] = 0;
         }
@@ -292,12 +287,9 @@ public class SyedA_Project1_Main {
                 minVal = scanner.nextInt();
                 maxVal = scanner.nextInt();
             }
-            //TEST
-            System.out.println(numRows + " " + numCols + " " + minVal + " " + maxVal);
-
             ThresholdSelection ts = new ThresholdSelection(numRows, numCols, minVal, maxVal);
             ts.maxHeight = ts.loadHist(ts.histAry, inFile);
-
+           
             //Step 2:
             ts.dispHist(ts.histAry, outFile1);
 
